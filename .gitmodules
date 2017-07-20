@@ -1,3 +1,4 @@
 [submodule "vendor/react-chatview"]
 	path = vendor/react-chatview
-	url = git@github.com:dustingetz/react-chatview.git
+	url = https://github.com/jsdevkr/react-chatview
+	branch = es6
