@@ -30,7 +30,7 @@ class MessagesController {
         //{action: "join", timestamp: 1445381773, data: Object, uuid: "462de233-d814-45ba-bfd3-2a77f0febae6", occupancy: 1}
         //{action: "state-change", timestamp: 1445385846, data: Object, uuid: "eea3cc59-df00-4a58-a8c9-fa9fb6ba535d", occupancy: 2}
         if (record.action === "leave") {
-          const newValue = _.reject(this.cursor.refine('present').value, {uid: record.data.uid});
+          const newValue = _.reject(this.cursor.refine('present').value(), {uid: record.data.uid});
           this.cursor.refine('present').set(newValue);
         } else if (record.action === "join") {
           if (!!record.data) {
@@ -41,7 +41,7 @@ class MessagesController {
         }
       },
       state: {
-        uid: this.cursor.refine('currentUserId').value,
+        uid: this.cursor.refine('currentUserId').value(),
         name: `Name-${shortUid()}`,
         status: 'Online'
       }
@@ -62,7 +62,7 @@ class MessagesController {
     this.PUBNUB_demo.state({
       channel  : this.channel,
       state    : {
-        uid: this.cursor.refine('currentUserId').value,
+        uid: this.cursor.refine('currentUserId').value(),
         name: `Name-${shortUid()}`,
         status: 'Online'
       },
@@ -97,7 +97,7 @@ class MessagesController {
     var loadCount = 25;
 
     return new Promise((resolve, reject) => {
-      if (!this.cursor.refine('loadedAllHistory').value) {
+      if (!this.cursor.refine('loadedAllHistory').value()) {
         this.PUBNUB_demo.history({
           channel: this.channel,
           count: loadCount,
@@ -120,7 +120,7 @@ class MessagesController {
             this.cursor.refine('messages').push(messages);
             resolve();
           },
-          start: this.unFormatTime((_.last(this.cursor.refine('messages').value) || {}).time),
+          start: this.unFormatTime((_.last(this.cursor.refine('messages').value()) || {}).time),
           include_token: true
         });
       }
@@ -128,7 +128,7 @@ class MessagesController {
   }
 
   unsubscribe() {
-    var uid = this.cursor.refine('currentUserId').value;
+    var uid = this.cursor.refine('currentUserId').value();
     //this.writeToService(uid + ' unsubscribed', uid, `message-${shortUid()}`);
     this.PUBNUB_demo.unsubscribe({
       channel: this.channel

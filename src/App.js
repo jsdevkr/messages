@@ -80,6 +80,7 @@ var Compose = React.createClass({
 
 var MessageDisplay = React.createClass({
   render() {
+    console.log('this.props.messages', this.props.messages);
     var rows = this.props.messages.map((record) => {
         return(
             <Message
@@ -114,14 +115,14 @@ var MessagesApp = React.createClass({
     return (
         <div className="messages-app">
           <MessageDisplay
-              isInfiniteLoading={this.props.cursor.refine('isInfiniteLoading').value}
+              isInfiniteLoading={this.props.cursor.refine('isInfiniteLoading').value()}
               sendMessage={controller.sendMessage.bind(controller)}
-              currentUserId={this.props.cursor.refine('currentUserId').value}
-              messages={this.props.cursor.refine('messages').value}
+              currentUserId={this.props.cursor.refine('currentUserId').value()}
+              messages={this.props.cursor.refine('messages').value()}
               composeTextCursor={this.props.cursor.refine('composeText')}
               loadMoreHistory={controller.loadMoreHistory.bind(controller)}/>
           <ContactList
-              present={this.props.cursor.refine('present').value}/>
+              present={this.props.cursor.refine('present').value()}/>
         </div>
     );
   }

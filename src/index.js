@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import atom from 'js-atom';
 import { Cursor } from 'react-cursor';
 import DeepDiff from 'deep-diff';
