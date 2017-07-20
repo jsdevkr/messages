@@ -1,18 +1,19 @@
 import _ from 'lodash';
 import moment from 'moment';
 import ChatView from 'react-chatview';
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './styles.less';
 
 
-var Message = React.createClass({
-  propTypes: {
-    myself: React.PropTypes.bool,
-    text: React.PropTypes.string.isRequired,
-    time: React.PropTypes.string.isRequired
-  },
+export class Message extends Component {
+  static propTypes = {
+    myself: PropTypes.bool,
+    text: PropTypes.string.isRequired,
+    time: PropTypes.string.isRequired
+  }
 
-  render: function () {
+  render() {
     var classNames = "message"; // + (this.props.myself ? " sent-message" : " received-message");
 
     return (
@@ -22,9 +23,9 @@ var Message = React.createClass({
         </div>
     );
   }
-});
+}
 
-var ContactListElement = React.createClass({
+export class ContactListElement extends Component {
   render() {
     var userObj = this.props.userObj;
     return (
@@ -33,10 +34,10 @@ var ContactListElement = React.createClass({
         </li>
     );
   }
-});
+}
 
-var ContactList = React.createClass({
-  render: function () {
+export class ContactList extends Component {
+  render() {
     var contactList = this.props.present;
     var list = contactList.map((userObj, i) => {
       return <ContactListElement userObj={userObj} key={userObj.uid}/>;
@@ -49,36 +50,36 @@ var ContactList = React.createClass({
         </div>
     );
   }
-});
+}
 
 var randInt = (i) => {return 1;};
 
-var Compose = React.createClass({
-  render () {
+export class Compose extends Component {
+  render() {
     return (
         <div className="composition-area">
             <textarea
                 onKeyDown={this.onKeyDown}
                 onChange={this.onChange}
-                value={this.props.cursor.value} />
+                value={this.props.cursor.value()} />
         </div>
     );
-  },
+  }
 
-  onChange(e) {
+  onChange = (e) => {
     this.props.cursor.set(e.target.value);
-  },
+  }
 
-  onKeyDown (e) {
+  onKeyDown = (e) => {
     if (e.keyCode == 13) {
       console.log('enter pressed');
       e.preventDefault();
-      this.props.sendMessage(this.props.cursor.value);
+      this.props.sendMessage(this.props.cursor.value());
     }
   }
-});
+}
 
-var MessageDisplay = React.createClass({
+export class MessageDisplay extends Component {
   render() {
     console.log('this.props.messages', this.props.messages);
     var rows = this.props.messages.map((record) => {
@@ -106,9 +107,9 @@ var MessageDisplay = React.createClass({
 
     )
   }
-});
+}
 
-var MessagesApp = React.createClass({
+export default class MessagesApp extends Component {
   render() {
     var controller = this.props.messagesController;
 
@@ -126,6 +127,4 @@ var MessagesApp = React.createClass({
         </div>
     );
   }
-});
-
-export default MessagesApp;
+}

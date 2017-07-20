@@ -15,7 +15,7 @@ class MessagesController {
       message: (msg, envelope) => {
         var ts = envelope[1];
         var messagesCursor = this.cursor.refine('messages');
-        var index = _.findIndex(messagesCursor.value, { messageId: msg.messageId });
+        var index = _.findIndex(messagesCursor.value(), { messageId: msg.messageId });
         var newRecord = _.extend({}, msg, {time: this.formatTS(ts)});
         if (index === -1) {
           messagesCursor.unshift([newRecord]);
